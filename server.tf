@@ -5,9 +5,13 @@ resource "aws_key_pair" "deployer" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-05d8c3dc27d413c4b"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t4g.micro"
   key_name      = aws_key_pair.deployer.key_name
+
+  lifecycle {
+    ignore_changes = [ami]
+  }
 
   tags = {
     Name = "TerraformLearning"
